@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedCare - Your Premium Healthcare Partner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0077b6;
+            --secondary-color: #48cae4;
+            --accent-color: #00b4d8;
+            --dark-color: #03045e;
+            --light-bg: #f8f9fa;
+            --text-color: #495057;
+            --heading-color: #212529;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Header & Navigation --- */
+        .header {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            background: linear-gradient(rgba(0, 119, 182, 0.7), rgba(0, 119, 182, 0.7)), url('https://images.unsplash.com/photo-1551076805-bf02f694e1d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NjY1MTN8MHwxfHNlYXJjaHw0fHxob3NwaXRhbCUyMGludGVyaW9yfGVufDB8fHx8MTY5OTUxNTk0NXww&ixlib=rb-4.0.3&q=80&w=1080') no-repeat center center/cover;
+            color: #fff;
+            text-align: center;
+            padding: 150px 0;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- General Section Styling --- */
+        .section {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--heading-color);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- About Section --- */
+        #about {
+            background-color: var(--light-bg);
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            text-align: left;
+            flex-wrap: wrap;
+        }
+        
+        .about-text, .about-image {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            color: var(--heading-color);
+            margin-bottom: 15px;
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .about-image img:hover {
+            transform: scale(1.02);
+        }
+
+        /* --- Services Section --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: #fff;
+            padding: 40px 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .service-card h3 {
+            font-size: 1.4rem;
+            color: var(--heading-color);
+            margin-bottom: 10px;
+        }
+        
+        /* --- Doctors Section --- */
+        #doctors {
+            background-color: var(--light-bg);
+        }
+
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .doctor-card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .doctor-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .doctor-info {
+            padding: 20px;
+        }
+
+        .doctor-info h4 {
+            font-size: 1.2rem;
+            color: var(--heading-color);
+            margin-bottom: 5px;
+        }
+
+        .doctor-info p {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        /* --- Appointment Section --- */
+        #appointment {
+            background: linear-gradient(rgba(0, 119, 182, 0.8), rgba(0, 119, 182, 0.8)), url('https://images.unsplash.com/photo-1576091160550-fd421d0d5718?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NjY1MTN8MHwxfHNlYXJjaHw3fHxob3NwaXRhbCUyMHNlY3JldGFyeXxlbnwwfHx8fDE2OTk1MTYwMTR8MA&ixlib=rb-4.0.3&q=80&w=1080') no-repeat center center/cover;
+            color: #fff;
+            position: relative;
+        }
+
+        .appointment-form-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .appointment-form-container h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--accent-color);
+            color: #fff;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* --- Contact & Footer --- */
+        #contact {
+            background-color: var(--light-bg);
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .contact-item {
+            text-align: center;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .contact-item i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            background-color: var(--dark-color);
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .nav-links li {
+                margin: 0 0.8rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container navbar">
+            <a href="#" class="logo">Med<span style="color:#48cae4;">Care</span></a>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#doctors">Doctors</a></li>
+                <li><a href="#appointment">Appointment</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="hero">
+            <div class="hero-content">
+                <h1>Your Health, Our Priority</h1>
+                <p>Providing compassionate and cutting-edge healthcare services to the community. Your well-being is at the heart of everything we do.</p>
+                <a href="#appointment" class="btn">Book an Appointment</a>
+            </div>
+        </section>
+
+        <section class="section" id="about">
+            <div class="container">
+                <h2 class="section-title">About Our Hospital</h2>
+                <div class="about-content">
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1587854692138-0c10260538a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NjY1MTN8MHwxfHNlYXJjaHwyMHx8aG9zcGl0YWwlMjB0ZWFtfGVufDB8fHx8MTY5OTUxNTk0NXww&ixlib=rb-4.0.3&q=80&w=1080" alt="Hospital Team">
+                    </div>
+                    <div class="about-text">
+                        <h3>Compassion, Innovation, Excellence</h3>
+                        <p>MedCare Hospital is dedicated to providing world-class medical services with a compassionate approach. Our state-of-the-art facilities and a team of highly-skilled professionals ensure that every patient receives the best possible care.</p>
+                        <p>We are committed to patient safety, advanced medical technology, and a healing environment that promotes wellness and recovery.</p>
+                        <a href="#services" class="btn">Our Services</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="services">
+            <div class="container">
+                <h2 class="section-title">Our Specialized Services</h2>
+                <p class="section-subtitle">We offer a wide range of medical services to meet your every need.</p>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <i class="fas fa-heartbeat"></i>
+                        <h3>Cardiology</h3>
+                        <p>Comprehensive heart care, from diagnostics to advanced surgeries.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-bone"></i>
+                        <h3>Orthopedics</h3>
+                        <p>Expert care for bone, joint, and muscle conditions.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-baby"></i>
+                        <h3>Pediatrics</h3>
+                        <p>Dedicated and gentle care for our youngest patients.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-x-ray"></i>
+                        <h3>Radiology</h3>
+                        <p>Advanced imaging for accurate diagnosis and treatment.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-stethoscope"></i>
+                        <h3>General Medicine</h3>
+                        <p>Providing primary and ongoing healthcare for all ages.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-brain"></i>
+                        <h3>Neurology</h3>
+                        <p>Treatment for a wide range of neurological disorders.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="doctors">
+            <div class="container">
+                <h2 class="section-title">Meet Our Medical Experts</h2>
+                <p class="section-subtitle">A team of dedicated and experienced doctors is here to serve you.</p>
+                <div class="doctors-grid">
+                    <div class="doctor-card">
+                        <img src="https://images.unsplash.com/photo-1559839734-2b71dcd2c4f8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NjY1MTN8MHwxfHNlYXJjaHwxNXx8ZG9jdG9yfGVufDB8fHx8MTY5OTUxNjA4MHww&ixlib=rb-4.0.3&q=80&w=1080" alt="Dr. Sharma">
+                        <div class="doctor-info">
+                            <h4>Dr. Priya Sharma</h4>
+                            <p>Cardiologist</p>
+                        </div>
+                    </div>
+                    <div class="doctor-card">
+                        <img src="https://images.unsplash.com/photo-1622253692040-279c65609a47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NjY1MTN8MHwxfHNlYXJjaHwxMHx8ZG9jdG9yfGVufDB8fHx8MTY5OTUxNjA4MHww&ixlib=rb-4.0.3&q=80&w=1080" alt="Dr. Khan">
+                        <div class="doctor-info">
+                            <h4>Dr. Rohan Khan</h4>
+                            <p>Orthopedic Surgeon</p>
+                        </div>
+                    </div>
+                    <div class="doctor-card">
+                        <img src="https://images.unsplash.com/photo-1612349317544-d30983d58231?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NjY1MTN8MHwxfHNlYXJjaHwyMHx8ZG9jdG9yfGVufDB8fHx8MTY5OTUxNjA4MHww&ixlib=rb-4.0.3&q=80&w=1080" alt="Dr. Gupta">
+                        <div class="doctor-info">
+                            <h4>Dr. Anjali Gupta</h4>
+                            <p>Pediatrician</p>
+                        </div>
+                    </div>
+                    <div class="doctor-card">
+                        <img src="https://images.unsplash.com/photo-1622902303256-6a56f6a0b77b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NjY1MTN8MHwxfHNlYXJjaHwxOHx8ZG9jdG9yfGVufDB8fHx8MTY5OTUxNjA4MHww&ixlib=rb-4.0.3&q=80&w=1080" alt="Dr. Singh">
+                        <div class="doctor-info">
+                            <h4>Dr. Arjun Singh</h4>
+                            <p>Neurologist</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="appointment">
+            <div class="container">
+                <div class="appointment-form-container">
+                    <h2>Book Your Appointment</h2>
+                    <form action="#" method="post">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Preferred Date</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="department">Select Department</label>
+                            <select id="department" name="department" required>
+                                <option value="">-- Select a department --</option>
+                                <option value="Cardiology">Cardiology</option>
+                                <option value="Orthopedics">Orthopedics</option>
+                                <option value="Pediatrics">Pediatrics</option>
+                                <option value="Radiology">Radiology</option>
+                                <option value="Neurology">Neurology</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Your Message</label>
+                            <textarea id="message" name="message" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Submit Appointment</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="contact">
+            <div class="container">
+                <h2 class="section-title">Contact Us</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Address</h3>
+                        <p>123 Medical Lane, City of Health, State, 12345</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <h3>Phone</h3>
+                        <p>+91 98765 43210</p>
+                        <p>+91 12345 67890</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email</h3>
+                        <p>info@medcare.com</p>
+                        <p>support@medcare.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 MedCare Hospital. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
