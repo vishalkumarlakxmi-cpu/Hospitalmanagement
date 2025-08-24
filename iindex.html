@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2a9d8f;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: #2a9d8f;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            background: #21867a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(42, 157, 143, 0.3);
+        }
+
+        /* Page Styles */
+        .page {
+            display: none;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Styles */
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            text-align: center;
+            color: #2a9d8f;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2a9d8f;
+            box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #2a9d8f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background: #21867a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(42, 157, 143, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        /* Message Styles */
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Demo Box */
+        .demo-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border-radius: 10px;
+            border: 1px solid #bbdefb;
+            font-size: 14px;
+        }
+
+        .demo-box code {
+            background: rgba(25, 118, 210, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Grid Layouts */
+        .services-grid, .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .service-card, .doctor-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border: 1px solid #dee2e6;
+        }
+
+        .service-card:hover, .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-card h3 {
+            color: #0077b6;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .doctor-card {
+            text-align: center;
+        }
+
+        .doctor-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #2a9d8f 0%, #21867a 100%);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Dashboard Styles */
+        .user-info {
+            background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 1px solid #dee2e6;
+        }
+
+        .appointments-list {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid #dee2e6;
+        }
+
+        .appointment-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid #2a9d8f;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px;
+            }
+
+            .nav-buttons {
+                justify-content: center;
+            }
+
+            .page {
+                padding: 20px;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .doctors-grid, .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2a9d8f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">🏥 Hospital Management System</div>
+            <div class="nav-buttons" id="navButtons">
+                <button class="nav-btn" onclick="showLoginPage()">🔐 Login</button>
+                <button class="nav-btn" onclick="showRegisterPage()">📝 Register</button>
+            </div>
+        </nav>
+
+        <div id="loginPage" class="page active">
+            <div class="form-container">
+                <h2 class="form-title">🔐 Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginUsername">Username</label>
+                        <input type="text" id="loginUsername" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <button type="button" class="btn" onclick="performLogin()">Login</button>
+                    <button type="button" class="btn btn-secondary" onclick="showRegisterPage()">
+                        New User? Register Here
+                    </button>
+                </form>
+                <div id="loginMessage"></div>
+                
+                <div class="demo-box">
+                    <strong>🎯 Demo Credentials:</strong><br><br>
+                    👤 <strong>Admin:</strong> username: <code>admin</code>, password: <code>1234</code><br>
+                    👤 <strong>Demo User:</strong> username: <code>demo</code>, password: <code>demo</code><br>
+                    📝 <strong>Or register a new account below</strong>
+                </div>
+            </div>
+        </div>
+
+        <div id="registerPage" class="page">
+            <div class="form-container">
+                <h2 class="form-title">📝 User Registration</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="regName">Full Name</label>
+                        <input type="text" id="regName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regMobile">Mobile Number</label>
+                        <input type="tel" id="regMobile" placeholder="Enter 10-digit mobile number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email Address</label>
+                        <input type="email" id="regEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regDob">Date of Birth</label>
+                        <input type="date" id="regDob" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regUsername">Choose Username</label>
+                        <input type="text" id="regUsername" placeholder="Choose a username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Create Password</label>
+                        <input type="password" id="regPassword" placeholder="Create a password" required>
+                    </div>
+                    <button type="button" class="btn" onclick="performRegister()">Register</button>
+                    <button type="button" class="btn btn-secondary" onclick="showLoginPage()">
+                        Already have an account? Login
+                    </button>
+                </form>
+                <div id="registerMessage"></div>
+            </div>
+        </div>
+
+        <div id="homePage" class="page">
+            <h1 style="text-align: center; color: #2a9d8f; margin-bottom: 30px; font-size: 36px;">
+                🏥 Welcome to Hospital Management System
+            </h1>
+            
+            <div class="user-info">
+                <h3 style="color: #2a9d8f; margin-bottom: 15px;">👤 User Information</h3>
+                <div id="userDetails"></div>
+            </div>
+
+            <div class="appointments-list">
+                <h3 style="color: #2a9d8f; margin-bottom: 15px;">📅 Your Appointments</h3>
+                <div id="userAppointments">
+                    <p style="color: #666;">No appointments booked yet.</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" onclick="showBookingPage()" style="width: auto; padding: 15px 40px; font-size: 18px;">
+                    📋 Book New Appointment
+                </button>
+            </div>
+        </div>
+
+        <div id="servicesPage" class="page">
+            <h1 style="text-align: center; color: #0077b6; margin-bottom: 20px; font-size: 36px;">
+                🏥 Our Hospital Services
+            </h1>
+            <p style="text-align: center; margin-bottom: 40px; color: #666; font-size: 18px;">
+                Providing quality healthcare for you and your family
+            </p>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>🚨 Emergency & Trauma Care</h3>
+                    <p>Our 24/7 emergency department is equipped with advanced life-saving equipment and staffed by experienced emergency specialists to provide immediate care for critical conditions.</p>
+                </div>
+
+                <div class="service-card">
+                    <h3>❤ Cardiology</h3>
+                    <p>Comprehensive heart care including ECG, echocardiography, angioplasty, and cardiac surgery with highly trained cardiologists and state-of-the-art equipment.</p>
+                </div>
+
+                <div class="service-card">
+                    <h3>👶 Pediatrics</h3>
+                    <p>Specialized healthcare for children, including vaccinations, growth monitoring, treatment of childhood illnesses, and developmental assessments.</p>
+                </div>
+
+                <div class="service-card">
+                    <h3>🦴 Orthopedics</h3>
+                    <p>Diagnosis and treatment of bone, joint, and muscle conditions, including fractures, arthritis, sports injuries, and joint replacement surgeries.</p>
+                </div>
+
+                <div class="service-card">
+                    <h3>🔬 Diagnostic Imaging</h3>
+                    <p>Advanced imaging services including X-ray, ultrasound, CT scans, MRI, and mammography for accurate diagnosis and treatment planning.</p>
+                </div>
+
+                <div class="service-card">
+                    <h3>⚕ General Surgery</h3>
+                    <p>Expert surgeons perform a wide range of procedures using modern minimally invasive techniques and advanced surgical equipment.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="doctorsPage" class="page">
+            <h1 style="text-align: center; color: #2a9d8f; margin-bottom: 20px; font-size: 36px;">
+                👨‍⚕ Our Medical Team
+            </h1>
+            <p style="text-align: center; margin-bottom: 40px; color: #666; font-size: 18px;">
+                Meet our experienced and dedicated healthcare professionals
+            </p>
+
+            <div class="doctors-grid">
+                <div class="doctor-card">
+                    <div class="doctor-avatar">👨‍⚕</div>
+                    <h3>Dr. Rajesh Kumar</h3>
+                    <p><strong>Senior Cardiologist</strong></p>
+                    <p>15+ years experience</p>
+                    <p>MBBS, MD - Cardiology, DM</p>
+                    <p style="margin-top: 10px; color: #666;">Specializes in interventional cardiology and heart surgeries</p>
+                </div>
+
+                <div class="doctor-card">
+                    <div class="doctor-avatar">👩‍⚕</div>
+                    <h3>Dr. Priya Sharma</h3>
+                    <p><strong>Chief Pediatrician</strong></p>
+                    <p>12+ years experience</p>
+                    <p>MBBS, MD - Pediatrics</p>
+                    <p style="margin-top: 10px; color: #666;">Expert in child healthcare and developmental disorders</p>
+                </div>
+
+                <div class="doctor-card">
+                    <div class="doctor-avatar">👨‍⚕</div>
+                    <h3>Dr. Amit Singh</h3>
+                    <p><strong>Orthopedic Surgeon</strong></p>
+                    <p>18+ years experience</p>
+                    <p>MBBS, MS - Orthopedics</p>
+                    <p style="margin-top: 10px; color: #666;">Specializes in joint replacement and sports medicine</p>
+                </div>
+
+                <div class="doctor-card">
+                    <div class="doctor-avatar">👩‍⚕</div>
+                    <h3>Dr. Sunita Patel</h3>
+                    <p><strong>General Surgeon</strong></p>
+                    <p>10+ years experience</p>
+                    <p>MBBS, MS - General Surgery</p>
+                    <p style="margin-top: 10px; color: #666;">Expert in laparoscopic and minimally invasive surgery</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="bookingPage" class="page">
+            <div class="form-container">
+                <h2 class="form-title">📋 Book Your Appointment</h2>
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label for="bookingName">Full Name</label>
+                        <input type="text" id="bookingName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingPhone">Phone Number</label>
+                        <input type="tel" id="bookingPhone" placeholder="Enter your phone number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingEmail">Email Address</label>
+                        <input type="email" id="bookingEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingDate">Appointment Date</label>
+                        <input type="date" id="bookingDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingTime">Preferred Time</label>
+                        <input type="time" id="bookingTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingDepartment">Select Department</label>
+                        <select id="bookingDepartment" required>
+                            <option value="">-- Choose Department --</option>
+                            <option value="cardiology">❤ Cardiology</option>
+                            <option value="pediatrics">👶 Pediatrics</option>
+                            <option value="orthopedics">🦴 Orthopedics</option>
+                            <option value="general-surgery">⚕ General Surgery</option>
+                            <option value="emergency">🚨 Emergency</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingNotes">Additional Notes</label>
+                        <textarea id="bookingNotes" rows="4" placeholder="Write any concerns or special requirements here..."></textarea>
+                    </div>
+                    <button type="button" class="btn" onclick="performBooking()">📅 Book Appointment</button>
+                </form>
+                <div id="bookingMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global Variables - Hospital Management System
+        var currentUser = null;
+        var hospitalUsers = [];
+        var hospitalAppointments = [];
+
+        // Initialize the application
+        function initializeApp() {
+            console.log('🏥 Hospital Management System Starting...');
+            
+            // Load saved data
+            loadDataFromStorage();
+            
+            // Set minimum date for appointments to today
+            setMinimumDate();
+            
+            // Check if user is already logged in
+            checkExistingLogin();
+            
+            console.log('✅ Application initialized successfully');
+        }
+
+        // Load data from localStorage
+        function loadDataFromStorage() {
+            try {
+                var storedUsers = localStorage.getItem('hospitalUsers');
+                var storedAppointments = localStorage.getItem('hospitalAppointments');
+                var storedCurrentUser = localStorage.getItem('currentUser');
+                
+                if (storedUsers) {
+                    hospitalUsers = JSON.parse(storedUsers);
+                }
+                
+                if (storedAppointments) {
+                    hospitalAppointments = JSON.parse(storedAppointments);
+                }
+                
+                if (storedCurrentUser) {
+                    currentUser = JSON.parse(storedCurrentUser);
+                }
+                
+                console.log('📊 Data loaded - Users:', hospitalUsers.length, 'Appointments:', hospitalAppointments.length);
+            } catch (error) {
+                console.log('⚠ No previous data found, starting fresh');
+                hospitalUsers = [];
+                hospitalAppointments = [];
+                currentUser = null;
+            }
+        }
+
+        // Save data to localStorage
+        function saveDataToStorage() {
+            try {
+                localStorage.setItem('hospitalUsers', JSON.stringify(hospitalUsers));
+                localStorage.setItem('hospitalAppointments', JSON.stringify(hospitalAppointments));
+                
+                if (currentUser) {
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                } else {
+                    localStorage.removeItem('currentUser');
+                }
+                
+                console.log('💾 Data saved successfully');
+            } catch (error) {
+                console.error('❌ Error saving data:', error);
+            }
+        }
+
+        // Check if user is already logged in
+        function checkExistingLogin() {
+            if (currentUser) {
+                console.log('👤 User already logged in:', currentUser.name);
+                showHomePage();
+                updateNavigation();
+                updateUserDisplay();
+            }
+        }
+
+        // Set minimum date for appointment booking
+        function setMinimumDate() {
+            var today = new Date().toISOString().split('T')[0];
+            var dateInput = document.getElementById('bookingDate');
+            if (dateInput) {
+                dateInput.min = today;
+            }
+        }
+
+        // Page Navigation Functions
+        function showPage(pageId) {
+            console.log('📄 Navigating to:', pageId);
+            
+            // Hide all pages
+            var pages = document.querySelectorAll('.page');
+            for (var i = 0; i < pages.length; i++) {
+                pages[i].classList.remove('active');
+            }
+            
+            // Show target page
+            var targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Update navigation
+            updateNavigation();
+        }
+
+        function showLoginPage() { showPage('loginPage'); }
+        function showRegisterPage() { showPage('registerPage'); }
+        function showHomePage() { showPage('homePage'); updateUserDisplay(); }
+        function showServicesPage() { showPage('servicesPage'); }
+        function showDoctorsPage() { showPage('doctorsPage'); }
+        function showBookingPage() { showPage('bookingPage'); prefillBookingForm(); }
+
+        // Update navigation based on login status
+        function updateNavigation() {
+            var navButtons = document.getElementById('navButtons');
+            
+            if (currentUser) {
+                navButtons.innerHTML = 
+                    '<button class="nav-btn" onclick="showHomePage()">🏠 Home</button>' +
+                    '<button class="nav-btn" onclick="showServicesPage()">🏥 Services</button>' +
+                    '<button class="nav-btn" onclick="showDoctorsPage()">👨‍⚕ Doctors</button>' +
+                    '<button class="nav-btn" onclick="showBookingPage()">📋 Book</button>' +
+                    '<button class="nav-btn" onclick="performLogout()">🚪 Logout (' + currentUser.name + ')</button>';
+            } else {
+                navButtons.innerHTML = 
+                    '<button class="nav-btn" onclick="showLoginPage()">🔐 Login</button>' +
+                    '<button class="nav-btn" onclick="showRegisterPage()">📝 Register</button>';
+            }
+        }
+
+        // Show message to user
+        function showMessage(elementId, message, type) {
+            var messageElement = document.getElementById(elementId);
+            if (messageElement) {
+                messageElement.innerHTML = '<div class="message ' + type + '">' + message + '</div>';
+                
+                // Auto-hide error messages after 5 seconds
+                if (type === 'error') {
+                    setTimeout(function() {
+                        messageElement.innerHTML = '';
+                    }, 5000);
+                }
+            }
+        }
+
+        // Clear form inputs
+        function clearForm(formId) {
+            var form = document.getElementById(formId);
+            if (form) {
+                var inputs = form.querySelectorAll('input, select, textarea');
+                for (var i = 0; i < inputs.length; i++) {
+                    inputs[i].value = '';
+                }
+            }
+        }
+
+        // Login Function
+        function performLogin() {
+            console.log('🔐 Processing login...');
+            
+            var username = document.getElementById('loginUsername').value.trim();
+            var password = document.getElementById('loginPassword').value.trim();
+            
+            console.log('Login attempt for username:', username);
+            
+            // Validate inputs
+            if (!username || !password) {
+                showMessage('loginMessage', '❌ Please enter both username and password.', 'error');
+                return;
+            }
+
+            // Admin login
+            if (username === 'admin' && password === '1234') {
+                currentUser = {
+                    id: 'admin',
+                    name: 'Administrator',
+                    username: 'admin',
+                    email: 'admin@hospital.com',
+                    isAdmin: true
+                };
+                
+                saveDataToStorage();
+                showMessage('loginMessage', '✅ Admin login successful!', 'success');
+                
+                setTimeout(function() {
+                    clearForm('loginForm');
+                    showHomePage();
+                }, 1500);
+                return;
+            }
+            
+            // Demo user login
+            if (username === 'demo' && password === 'demo') {
+                currentUser = {
+                    id: 'demo',
+                    name: 'Demo User',
+                    username: 'demo',
+                    email: 'demo@hospital.com',
+                    mobile: '9876543210',
+                    dob: '1990-01-01'
+                };
+                
+                saveDataToStorage();
+                showMessage('loginMessage', '✅ Demo login successful!', 'success');
+                
+                setTimeout(function() {
+                    clearForm('loginForm');
+                    showHomePage();
+                }, 1500);
+                return;
+            }
+            
+            // Regular user login
+            var user = null;
+            for (var i = 0; i < hospitalUsers.length; i++) {
+                if (hospitalUsers[i].username === username && hospitalUsers[i].password === password) {
+                    user = hospitalUsers[i];
+                    break;
+                }
+            }
+            
+            if (user) {
+                currentUser = user;
+                saveDataToStorage();
+                showMessage('loginMessage', '✅ Welcome back, ' + user.name + '!', 'success');
+                
+                setTimeout(function() {
+                    clearForm('loginForm');
+                    showHomePage();
+                }, 1500);
+            } else {
+                showMessage('loginMessage', '❌ Invalid credentials. Try: admin/1234 or demo/demo', 'error');
+            }
+        }
+
+        // Registration Function
+        function performRegister() {
+            console.log('📝 Processing registration...');
+            
+            var name = document.getElementById('regName').value.trim();
+            var mobile = document.getElementById('regMobile').value.trim();
+            var email = document.getElementById('regEmail').value.trim();
+            var dob = document.getElementById('regDob').value;
+            var username = document.getElementById('regUsername').value.trim();
+            var password = document.getElementById('regPassword').value.trim();
+            
+            // Validation
+            if (!name || !mobile || !email || !dob || !username || !password) {
+                showMessage('registerMessage', '❌ Please fill all fields.', 'error');
+                return;
+            }
+            
+            if (name.length < 2) {
+                showMessage('registerMessage', '❌ Name must be at least 2 characters long.', 'error');
+                return;
+            }
+            
+            if (!/^[0-9]{10}$/.test(mobile)) {
+                showMessage('registerMessage', '❌ Please enter a valid 10-digit mobile number.', 'error');
+                return;
+            }
+            
+            if (username.length < 3) {
+                showMessage('registerMessage', '❌ Username must be at least 3 characters long.', 'error');
+                return;
+            }
+            
+            if (password.length < 4) {
+                showMessage('registerMessage', '❌ Password must be at least 4 characters long.', 'error');
+                return;
+            }
+            
+            // Check for existing users
+            for (var i = 0; i < hospitalUsers.length; i++) {
+                if (hospitalUsers[i].username === username) {
+                    showMessage('registerMessage', '❌ Username already exists. Please choose another.', 'error');
+                    return;
+                }
+                if (hospitalUsers[i].email === email) {
+                    showMessage('registerMessage', '❌ Email already registered. Please use another email.', 'error');
+                    return;
+                }
+            }
+            
+            // Create new user
+            var newUser = {
+                id: Date.now(),
+                name: name,
+                mobile: mobile,
+                email: email,
+                dob: dob,
+                username: username,
+                password: password,
+                registeredAt: new Date().toISOString()
+            };
+            
+            hospitalUsers.push(newUser);
+            saveDataToStorage();
+            
+            showMessage('registerMessage', '✅ Registration successful! Please log in.', 'success');
+            
+            setTimeout(function() {
+                clearForm('registerForm');
+                showLoginPage();
+            }, 2000);
+        }
+
+        // Logout Function
+        function performLogout() {
+            console.log('🚪 Logging out user:', currentUser.name);
+            currentUser = null;
+            saveDataToStorage();
+            updateNavigation();
+            showLoginPage();
+            showMessage('loginMessage', '👋 You have been logged out.', 'success');
+        }
+
+        // Update Dashboard Display
+        function updateUserDisplay() {
+            var userDetailsElement = document.getElementById('userDetails');
+            var userAppointmentsElement = document.getElementById('userAppointments');
+            
+            if (!currentUser) {
+                userDetailsElement.innerHTML = '<p>No user logged in.</p>';
+                userAppointmentsElement.innerHTML = '<p style="color: #666;">No appointments booked yet.</p>';
+                return;
+            }
+            
+            // Display user details
+            var userDetailsHtml = '<ul>';
+            userDetailsHtml += '<li><strong>Name:</strong> ' + currentUser.name + '</li>';
+            userDetailsHtml += '<li><strong>Username:</strong> ' + currentUser.username + '</li>';
+            if (currentUser.email) {
+                userDetailsHtml += '<li><strong>Email:</strong> ' + currentUser.email + '</li>';
+            }
+            if (currentUser.mobile) {
+                userDetailsHtml += '<li><strong>Mobile:</strong> ' + currentUser.mobile + '</li>';
+            }
+            userDetailsHtml += '</ul>';
+            userDetailsElement.innerHTML = userDetailsHtml;
+            
+            // Display appointments
+            var userAppointments = hospitalAppointments.filter(app => app.userId === currentUser.id);
+            if (userAppointments.length > 0) {
+                var appointmentsHtml = '';
+                userAppointments.forEach(app => {
+                    appointmentsHtml += `
+                        <div class="appointment-item">
+                            <p><strong>Department:</strong> ${app.department}</p>
+                            <p><strong>Date:</strong> ${app.date}</p>
+                            <p><strong>Time:</strong> ${app.time}</p>
+                            <p><strong>Notes:</strong> ${app.notes || 'N/A'}</p>
+                        </div>
+                    `;
+                });
+                userAppointmentsElement.innerHTML = appointmentsHtml;
+            } else {
+                userAppointmentsElement.innerHTML = '<p style="color: #666;">No appointments booked yet.</p>';
+            }
+        }
+
+        // Prefill booking form with user data
+        function prefillBookingForm() {
+            if (currentUser) {
+                document.getElementById('bookingName').value = currentUser.name || '';
+                document.getElementById('bookingPhone').value = currentUser.mobile || '';
+                document.getElementById('bookingEmail').value = currentUser.email || '';
+            }
+        }
+
+        // Booking Function
+        function performBooking() {
+            console.log('📋 Processing appointment booking...');
+            
+            if (!currentUser) {
+                showMessage('bookingMessage', '❌ You must be logged in to book an appointment.', 'error');
+                return;
+            }
+            
+            var bookingForm = document.getElementById('bookingForm');
+            if (!bookingForm.checkValidity()) {
+                showMessage('bookingMessage', '❌ Please fill all required fields correctly.', 'error');
+                bookingForm.reportValidity();
+                return;
+            }
+            
+            var name = document.getElementById('bookingName').value;
+            var phone = document.getElementById('bookingPhone').value;
+            var email = document.getElementById('bookingEmail').value;
+            var date = document.getElementById('bookingDate').value;
+            var time = document.getElementById('bookingTime').value;
+            var department = document.getElementById('bookingDepartment').value;
+            var notes = document.getElementById('bookingNotes').value;
+            
+            var newAppointment = {
+                id: Date.now(),
+                userId: currentUser.id,
+                name: name,
+                phone: phone,
+                email: email,
+                date: date,
+                time: time,
+                department: department,
+                notes: notes,
+                bookedAt: new Date().toISOString()
+            };
+            
+            hospitalAppointments.push(newAppointment);
+            saveDataToStorage();
+            
+            showMessage('bookingMessage', '✅ Appointment successfully booked!', 'success');
+            
+            setTimeout(function() {
+                clearForm('bookingForm');
+                showHomePage();
+            }, 2000);
+        }
+
+        // Initial call to start the application
+        window.onload = initializeApp;
+    </script>
+</body>
+</html>
